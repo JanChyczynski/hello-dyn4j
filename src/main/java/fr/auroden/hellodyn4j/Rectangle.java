@@ -39,8 +39,7 @@ import java.util.Random;
 public class Rectangle extends javafx.scene.shape.Rectangle implements BodyListener {
 	private static Random randomGenerator = new Random(System.currentTimeMillis());
 
-	public Rectangle(BodyWrapper bodyWrapper) {
-		bodyWrapper.addBodyListener(this);
+	public Rectangle() {
 		setSmooth(true);
 		setFill(Color.color(randomGenerator.nextDouble() * 0.75, randomGenerator.nextDouble() * 0.75, randomGenerator.nextDouble() * 0.75));
 	}
