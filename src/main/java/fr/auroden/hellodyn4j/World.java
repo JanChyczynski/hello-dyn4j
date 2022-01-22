@@ -32,7 +32,7 @@ import org.dyn4j.dynamics.Body;
 import java.util.ArrayList;
 import java.util.List;
 
-public class World extends org.dyn4j.dynamics.World {
+public class World extends org.dyn4j.world.World {
 	List<BodyWrapper> bodies = new ArrayList<>();
 
 	// time step for Box2D.
@@ -45,7 +45,7 @@ public class World extends org.dyn4j.dynamics.World {
 		super();
 	}
 
-	@Override
+
 	public void addBody(Body newBody) {
 		super.addBody(newBody);
 		BodyWrapper bodyWrapper = new BodyWrapper(newBody);
@@ -56,7 +56,7 @@ public class World extends org.dyn4j.dynamics.World {
 	public void update() {
 		update(this.timeStep); // be aware that updatev exists!
 		this.bodies.stream()
-				.filter(bodyWrapper -> (!bodyWrapper.getBody().isAsleep()))
+				.filter(bodyWrapper -> (!bodyWrapper.getBody().isAtRest()))
 				.forEach(BodyWrapper::update);
 		fireWorldUpdate();
 	}

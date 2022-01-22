@@ -37,6 +37,7 @@ import javafx.stage.Stage;
 import org.dyn4j.dynamics.Body;
 import org.dyn4j.dynamics.BodyFixture;
 import org.dyn4j.geometry.Mass;
+import org.dyn4j.geometry.MassType;
 import org.dyn4j.geometry.Rectangle;
 import org.dyn4j.geometry.Vector2;
 
@@ -45,9 +46,6 @@ import java.util.Random;
 public class HelloDyn4J extends Application {
 	Stage primStage;
 
-	public static void main(String[] args) {
-		launch(args);
-	}
 
 	@Override
 	public void start(Stage primaryStage) {
@@ -100,7 +98,7 @@ public class HelloDyn4J extends Application {
 
 		Body ground = new Body();
 		ground.addFixture(groundFixture);
-		ground.setMass(Mass.Type.INFINITE);
+		ground.setMass(MassType.INFINITE);
 		ground.translate(0., 0.);
 
 		world.addBody(ground);
@@ -117,7 +115,7 @@ public class HelloDyn4J extends Application {
 
 		Body box = new Body();
 		box.addFixture(boxFixture);
-		box.setMass(Mass.Type.NORMAL);
+		box.setMass(MassType.NORMAL);
 		box.translate(x / GUI.SCALE, -y / GUI.SCALE);
 
 		world.addBody(box);
@@ -137,7 +135,7 @@ public class HelloDyn4J extends Application {
 
 			Body box = new Body();
 			box.addFixture(boxFixture);
-			box.setMass(Mass.Type.NORMAL);
+			box.setMass(MassType.NORMAL);
 			box.translate(rand.nextInt(40) - 20, rand.nextInt(30) + 70);
 			box.setAngularVelocity((rand.nextFloat() - 0.5f) * 16);
 

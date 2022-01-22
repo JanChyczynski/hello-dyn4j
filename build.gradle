@@ -1,5 +1,17 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.0.10'
+}
+
 group 'fr.auroden'
 version '1.0-SNAPSHOT'
+
+javafx {
+    version = "17"
+    modules = [ 'javafx.controls' ]
+}
+
 
 apply plugin: 'java'
 apply plugin: 'eclipse'
@@ -14,7 +26,8 @@ repositories {
 }
 
 dependencies {
-    compile 'org.dyn4j:dyn4j:3.1.5'
+//    compile 'org.dyn4j:dyn4j:3.1.5'
+    implementation 'org.dyn4j:dyn4j:4.2.1'
 }
 
 //create a single Jar with all dependencies

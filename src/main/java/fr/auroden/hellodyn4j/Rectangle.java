@@ -50,7 +50,7 @@ public class Rectangle extends javafx.scene.shape.Rectangle implements BodyListe
 			Body body = e.getSource();
 
 			Vector2 position = body.getWorldCenter();
-			double angle = body.getTransform().getRotation();
+			double angle = body.getTransform().getRotationAngle();
 			Fixture fixture = body.getFixture(0);
 			Convex bodyShape = fixture.getShape();
 
