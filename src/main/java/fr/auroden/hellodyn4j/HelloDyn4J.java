@@ -74,19 +74,17 @@ public class HelloDyn4J extends Application {
 
 		Scheduler scheduler = new Scheduler(world);
 
-		SimulationBody ground = createGround(world);
+		Body ground = createGround(world);
 
 		scheduler.start();
 		this.primStage.show();
-
-		Camera camera = new Camera();
 
 		scene.setOnMouseClicked(e -> {
 			if (e.getButton() == MouseButton.SECONDARY) {
 //				createBoxAt(world, e.getX(), e.getY());
 				createBallAt(world, e.getX(), e.getY());
 			} else {
-				SimulationBody retvalue = clickHandler.mouseClicked(e.getX(), e.getY());
+				Body retvalue = clickHandler.mouseClicked(e.getX(), e.getY());
 				if (retvalue != null) {
 					world.addBody(retvalue);
 				}
@@ -97,8 +95,8 @@ public class HelloDyn4J extends Application {
 	}
 
 
-	private SimulationBody createGround(World world) {
-		SimulationBody ground = new SimulationBody();
+	private Body createGround(World world) {
+		Body ground = new Body();
 		ground.addFixture(Geometry.createRectangle(50.0, 1.0));
 		ground.translate(new Vector2(0.6875, -18.75));
 		ground.setMass(MassType.INFINITE);
@@ -116,7 +114,7 @@ public class HelloDyn4J extends Application {
 		ballFixture.setRestitution(0.2);
 		ballFixture.setFilter(BALL);
 
-		SimulationBody box = new SimulationBody();
+		Body box = new Body();
 		box.addFixture(ballFixture);
 		box.setMass(MassType.NORMAL);
 		box.translate(x / GUI.SCALE, -y / GUI.SCALE);

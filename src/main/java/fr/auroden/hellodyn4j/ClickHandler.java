@@ -15,13 +15,16 @@ public class ClickHandler {
     int clickCount = 0;
     double[] firstClick = new double[2];
 
-    public SimulationBody mouseClicked(double x, double y) {
+    public Body mouseClicked(double x, double y) {
         clickCount ++;
         if (clickCount == 2){
             clickCount %= 2;
 
             BodyFixture bodyFixture = new BodyFixture(
-                    new Rectangle(Math.abs(x - firstClick[0]) / GUI.SCALE, 0.5)
+                    new Rectangle(
+                            Math.sqrt(Math.pow(x - firstClick[0], 2) + Math.pow(y - firstClick[1], 2)) / GUI.SCALE,
+                            0.2
+                    )
             );
             bodyFixture.setDensity(0.2);
             bodyFixture.setFriction(0.3);
@@ -32,7 +35,7 @@ public class ClickHandler {
                             (firstClick[1] - y) / (firstClick[0] - x)
                     ));
 
-            SimulationBody line = new SimulationBody();
+            Body line = new Body();
             line.addFixture(bodyFixture);
             line.setMass(MassType.INFINITE);
             line.translate( (x + firstClick[0]) / (2 * GUI.SCALE), -(y + firstClick[1]) / (2 * GUI.SCALE));
