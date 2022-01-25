@@ -28,29 +28,38 @@
 package fr.auroden.hellodyn4j;
 
 import javafx.application.Application;
-import javafx.scene.Camera;
 import javafx.scene.Group;
 import javafx.scene.ParallelCamera;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseButton;
 import javafx.stage.Stage;
+import org.dyn4j.collision.CategoryFilter;
 import org.dyn4j.dynamics.Body;
 import org.dyn4j.dynamics.BodyFixture;
-import org.dyn4j.geometry.Mass;
-import org.dyn4j.geometry.MassType;
+import org.dyn4j.dynamics.joint.RevoluteJoint;
+import org.dyn4j.geometry.*;
 import org.dyn4j.geometry.Rectangle;
-import org.dyn4j.geometry.Vector2;
 
+import java.sql.Wrapper;
+import java.util.List;
 import java.util.Random;
 
 public class HelloDyn4J extends Application {
+
+	private static final CategoryFilter ALL = new CategoryFilter(1, Long.MAX_VALUE);
+	private static final CategoryFilter BALL = new CategoryFilter(2, Long.MAX_VALUE);
+	private static final CategoryFilter PIN = new CategoryFilter(4, 1 | 2 | 8);
+	private static final CategoryFilter NOT_BALL = new CategoryFilter(8, 1 | 4);
+
 	Stage primStage;
+	ClickHandler clickHandler = new ClickHandler();
 
 
 	@Override
 	public void start(Stage primaryStage) {
 		this.primStage = primaryStage;
 		this.primStage.setTitle("HelloDyn4J");
+		this.primStage.sizeToScene();
 
 		Group root = new Group();
 
@@ -65,43 +74,54 @@ public class HelloDyn4J extends Application {
 
 		Scheduler scheduler = new Scheduler(world);
 
-		createGround(world);
-		populate(world);
+		SimulationBody ground = createGround(world);
 
 		scheduler.start();
 		this.primStage.show();
 
-		Camera camera = new ParallelCamera();
-		camera.setLayoutX(-1000);
-		camera.setLayoutY(-2000);
-		camera.setScaleX(3);
-		camera.setScaleY(3);
-
-		scene.setCamera(camera);
+		Camera camera = new Camera();
 
 		scene.setOnMouseClicked(e -> {
 			if (e.getButton() == MouseButton.SECONDARY) {
-				populate(world);
+//				createBoxAt(world, e.getX(), e.getY());
+				createBallAt(world, e.getX(), e.getY());
 			} else {
-				createBoxAt(world, e.getX(), e.getY());
+				SimulationBody retvalue = clickHandler.mouseClicked(e.getX(), e.getY());
+				if (retvalue != null) {
+					world.addBody(retvalue);
+				}
+//				createBoxAt(world, e.getX(), e.getY());
 			}
 		});
 
-		//scheduler.stop();
 	}
 
-	private void createGround(World world) {
-		// Create a ground.
-		Rectangle groundRect = new Rectangle(100., 20.);
 
-		BodyFixture groundFixture = new BodyFixture(groundRect);
-
-		Body ground = new Body();
-		ground.addFixture(groundFixture);
+	private SimulationBody createGround(World world) {
+		SimulationBody ground = new SimulationBody();
+		ground.addFixture(Geometry.createRectangle(50.0, 1.0));
+		ground.translate(new Vector2(0.6875, -18.75));
 		ground.setMass(MassType.INFINITE);
-		ground.translate(0., 0.);
-
 		world.addBody(ground);
+		return ground;
+	}
+
+	private void createBallAt(World world, double x, double y) {
+		// create a box
+		Circle ballShape = new Circle(2.0);
+
+		BodyFixture ballFixture = new BodyFixture(ballShape);
+		ballFixture.setDensity(0.2);
+		ballFixture.setFriction(0.3);
+		ballFixture.setRestitution(0.2);
+		ballFixture.setFilter(BALL);
+
+		SimulationBody box = new SimulationBody();
+		box.addFixture(ballFixture);
+		box.setMass(MassType.NORMAL);
+		box.translate(x / GUI.SCALE, -y / GUI.SCALE);
+
+		world.addBody(box);
 	}
 
 	private void createBoxAt(World world, double x, double y) {
