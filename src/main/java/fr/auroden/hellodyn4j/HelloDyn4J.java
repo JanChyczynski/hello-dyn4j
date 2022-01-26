@@ -82,8 +82,8 @@ public class HelloDyn4J extends Application {
 
 		scene.setOnMouseClicked(e -> {
 			if (e.getButton() == MouseButton.SECONDARY) {
-				createBoxAt(world, e.getX(), e.getY());
-//				createBallAt(world, e.getX(), e.getY());
+//				createBoxAt(world, e.getX(), e.getY());
+				createBallAt(world, e.getX(), e.getY());
 			} else {
 				Body retvalue = clickHandler.mouseClicked(e.getX(), e.getY());
 				if (retvalue != null) {

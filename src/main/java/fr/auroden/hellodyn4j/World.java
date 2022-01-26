@@ -55,6 +55,7 @@ public class World extends org.dyn4j.world.World {
 
 	public void update() {
 		update(this.timeStep); // be aware that updatev exists!
+
 		this.bodies.stream()
 				.filter(bodyWrapper -> (!bodyWrapper.getBody().isAtRest()))
 				.forEach(BodyWrapper::update);

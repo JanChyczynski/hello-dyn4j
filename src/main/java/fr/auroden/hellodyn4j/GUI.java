@@ -29,9 +29,6 @@ package fr.auroden.hellodyn4j;
 
 import javafx.scene.Group;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class GUI implements WorldListener {
 	public static final int SCALE = 32;
 

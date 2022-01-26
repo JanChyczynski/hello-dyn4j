@@ -10,7 +10,6 @@ import org.dyn4j.geometry.Vector2;
 import java.util.Random;
 
 public class Circle extends javafx.scene.shape.Circle implements BodyListener{
-
     private static Random randomGenerator = new Random(System.currentTimeMillis());
 
     public Circle() {
@@ -30,12 +29,11 @@ public class Circle extends javafx.scene.shape.Circle implements BodyListener{
             Fixture fixture = body.getFixture(0);
             Convex bodyShape = fixture.getShape();
 
-            rotateProperty().set(-Math.toDegrees(angle));
-
             AABB aabb = bodyShape.createAABB();
-			setCenterX((position.x + aabb.getMinX()) * GUI.SCALE);
-			setCenterY((-position.y + aabb.getMinY()) * GUI.SCALE);
-			setRadius(aabb.getWidth() * GUI.SCALE / 2);
+			setCenterX((position.x + (aabb.getMinX() + aabb.getMaxX())/2) * GUI.SCALE);
+			setCenterY((-position.y + (aabb.getMinY() + aabb.getMaxY())/2) * GUI.SCALE);
+			setRadius(aabb.getHeight() * GUI.SCALE / 2);
+            rotateProperty().set(-Math.toDegrees(angle));
         }
     }
 }
