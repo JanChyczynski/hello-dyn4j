@@ -1,5 +1,6 @@
 package fr.auroden.hellodyn4j;
 
+import javafx.scene.transform.Rotate;
 import org.dyn4j.collision.CategoryFilter;
 import org.dyn4j.dynamics.Body;
 import org.dyn4j.dynamics.BodyFixture;
@@ -30,16 +31,15 @@ public class ClickHandler {
             bodyFixture.setFriction(0.3);
             bodyFixture.setRestitution(0.2);
             bodyFixture.setFilter(ALL);
-            bodyFixture.getShape().
-                    rotate(-Math.atan(
-                            (firstClick[1] - y) / (firstClick[0] - x)
-                    ));
 
             Body line = new Body();
             line.addFixture(bodyFixture);
             line.setMass(MassType.INFINITE);
             line.translate( (x + firstClick[0]) / (2 * GUI.SCALE), -(y + firstClick[1]) / (2 * GUI.SCALE));
-            System.out.println("added");
+            line.getTransform().setRotation(-Math.atan(
+                    (firstClick[1] - y) / (firstClick[0] - x)
+            ));
+            System.out.println(line.getTransform().getRotationAngle());
             return line;
 
         } else {

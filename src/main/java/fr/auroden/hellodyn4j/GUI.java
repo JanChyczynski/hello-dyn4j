@@ -37,8 +37,6 @@ public class GUI implements WorldListener {
 
 	Group group;
 
-	List<Rectangle> rectangles = new ArrayList<>();
-
 	public GUI(World world, Group group) {
 		world.addWorldListener(this);
 		this.group = group;
@@ -47,10 +45,17 @@ public class GUI implements WorldListener {
 	@Override
 	public void worldUpdate(WorldEvent e) {
 		if (e.getType() == WorldEvent.Type.BODY_ADDED) {
-			Rectangle rectangle = new Rectangle();
-			e.getBody().addBodyListener(rectangle);
-			this.rectangles.add(rectangle);
-			this.group.getChildren().add(rectangle);
+			if (e.getBody().getBody().getFixture(0).getShape() instanceof org.dyn4j.geometry.Rectangle){
+				Rectangle rectangle = new Rectangle();
+				e.getBody().addBodyListener(rectangle);
+				this.group.getChildren().add(rectangle);
+			}
+			else {
+				Circle circle = new Circle();
+				e.getBody().addBodyListener(circle);
+				this.group.getChildren().add(circle);
+			}
+
 		}
 	}
 }

@@ -28,10 +28,12 @@
 package fr.auroden.hellodyn4j;
 
 import javafx.scene.paint.Color;
+import javafx.scene.transform.Rotate;
 import org.dyn4j.collision.Fixture;
 import org.dyn4j.dynamics.Body;
 import org.dyn4j.geometry.AABB;
 import org.dyn4j.geometry.Convex;
+import org.dyn4j.geometry.Rotation;
 import org.dyn4j.geometry.Vector2;
 
 import java.util.Random;
@@ -41,7 +43,9 @@ public class Rectangle extends javafx.scene.shape.Rectangle implements BodyListe
 
 	public Rectangle() {
 		setSmooth(true);
-		setFill(Color.color(randomGenerator.nextDouble() * 0.75, randomGenerator.nextDouble() * 0.75, randomGenerator.nextDouble() * 0.75));
+		setFill(Color.color(randomGenerator.nextDouble() * 0.75,
+				randomGenerator.nextDouble() * 0.75,
+				randomGenerator.nextDouble() * 0.75));
 	}
 
 	@Override
@@ -54,13 +58,13 @@ public class Rectangle extends javafx.scene.shape.Rectangle implements BodyListe
 			Fixture fixture = body.getFixture(0);
 			Convex bodyShape = fixture.getShape();
 
-			rotateProperty().set(-Math.toDegrees(angle));
 
 			AABB aabb = bodyShape.createAABB();
 			setX((position.x + aabb.getMinX()) * GUI.SCALE);
 			setY((-position.y + aabb.getMinY()) * GUI.SCALE);
 			setWidth(aabb.getWidth() * GUI.SCALE);
 			setHeight(aabb.getHeight() * GUI.SCALE);
+			rotateProperty().set(-Math.toDegrees(angle));
 		}
 	}
 }

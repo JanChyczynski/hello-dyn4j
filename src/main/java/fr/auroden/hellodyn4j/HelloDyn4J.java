@@ -38,6 +38,7 @@ import org.dyn4j.dynamics.Body;
 import org.dyn4j.dynamics.BodyFixture;
 import org.dyn4j.dynamics.joint.RevoluteJoint;
 import org.dyn4j.geometry.*;
+import org.dyn4j.geometry.Circle;
 import org.dyn4j.geometry.Rectangle;
 
 import java.sql.Wrapper;
@@ -74,15 +75,15 @@ public class HelloDyn4J extends Application {
 
 		Scheduler scheduler = new Scheduler(world);
 
-		Body ground = createGround(world);
+		createGround(world);
 
 		scheduler.start();
 		this.primStage.show();
 
 		scene.setOnMouseClicked(e -> {
 			if (e.getButton() == MouseButton.SECONDARY) {
-//				createBoxAt(world, e.getX(), e.getY());
-				createBallAt(world, e.getX(), e.getY());
+				createBoxAt(world, e.getX(), e.getY());
+//				createBallAt(world, e.getX(), e.getY());
 			} else {
 				Body retvalue = clickHandler.mouseClicked(e.getX(), e.getY());
 				if (retvalue != null) {
@@ -95,31 +96,31 @@ public class HelloDyn4J extends Application {
 	}
 
 
-	private Body createGround(World world) {
+	private void createGround(World world) {
 		Body ground = new Body();
 		ground.addFixture(Geometry.createRectangle(50.0, 1.0));
 		ground.translate(new Vector2(0.6875, -18.75));
 		ground.setMass(MassType.INFINITE);
 		world.addBody(ground);
-		return ground;
 	}
 
 	private void createBallAt(World world, double x, double y) {
-		// create a box
+		// create a ball
 		Circle ballShape = new Circle(2.0);
 
 		BodyFixture ballFixture = new BodyFixture(ballShape);
 		ballFixture.setDensity(0.2);
 		ballFixture.setFriction(0.3);
 		ballFixture.setRestitution(0.2);
-		ballFixture.setFilter(BALL);
+//		mniejsze odbijanie się (chyba)
+//		ballFixture.setFilter(BALL);
 
-		Body box = new Body();
-		box.addFixture(ballFixture);
-		box.setMass(MassType.NORMAL);
-		box.translate(x / GUI.SCALE, -y / GUI.SCALE);
+		Body ball = new Body();
+		ball.addFixture(ballFixture);
+		ball.setMass(MassType.NORMAL);
+		ball.translate(x / GUI.SCALE, -y / GUI.SCALE);
 
-		world.addBody(box);
+		world.addBody(ball);
 	}
 
 	private void createBoxAt(World world, double x, double y) {
